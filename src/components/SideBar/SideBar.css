@@ -1,0 +1,48 @@
+.logo {
+    height: 64px;
+    background: #001529;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-layout-sider {
+    position: relative;
+}
+
+.trigger-button {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    background: #001529;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.trigger-button:hover {
+    background: #1890ff;
+}
+
+.ant-layout-sider-collapsed .logo img {
+    padding: 8px !important;
+}
+
+.ant-layout-sider {
+    background: #001529;
+}
+
+.ant-menu-dark {
+    background: #001529;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+    background-color: #1890ff;
+} 
