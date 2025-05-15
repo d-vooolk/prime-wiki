@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Spin } from 'antd';
+import { Layout } from 'antd';
 import CustomBreadcrumb from '../Breadcrumb/Breadcrumb';
 import CarSelector from '../CarSelector/CarSelector';
 import TabsContent from '../TabsContent/TabsContent';
@@ -76,7 +76,7 @@ const MainContent: React.FC<MainContentProps> = ({
                     </>
                 ) : (
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                        <AddCarInfo />
+                        <AddCarInfo activeKey={activeKey} />
                     </div>
                 )}
             </Content>

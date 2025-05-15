@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Card, Row, Col, Select, Tabs, Typography, message, Checkbox } from 'antd';
+import { Form, Input, Button, Card, Row, Col, Select, Tabs, message, Checkbox } from 'antd';
 import {
     ApiOutlined,
     BranchesOutlined,
@@ -16,9 +16,12 @@ import { handleApiError } from '../../utils/error.utils';
 const { Option } = Select;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
-const { Title } = Typography;
 
-const AddCarInfo: React.FC = () => {
+interface AddCarInfoProps {
+    activeKey: string;
+}
+
+const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
     const [form] = Form.useForm();
     const [activeTab, setActiveTab] = React.useState('1');
     
@@ -31,6 +34,8 @@ const AddCarInfo: React.FC = () => {
         generations: false,
         submit: false
     });
+    const [selectedBrand, setSelectedBrand] = React.useState<string>('');
+    const [selectedModel, setSelectedModel] = React.useState<string>('');
 
     useEffect(() => {
         fetchBrands();
@@ -72,14 +77,15 @@ const AddCarInfo: React.FC = () => {
         }
     };
 
-    const handleBrandChange = async (brandId: string) => {
-        form.setFieldsValue({ model: undefined, generation: undefined });
+    const handleBrandChange = async (value: string) => {
+        setSelectedBrand(value);
+        setSelectedModel('');
         setModels([]);
         setGenerations([]);
 
         try {
             setLoading(prev => ({ ...prev, models: true }));
-            const modelsData = await carApi.fetchModels(brandId);
+            const modelsData = await carApi.fetchModels(value);
             setModels(modelsData);
         } catch (error) {
             handleApiError(error, 'Ошибка при загрузке моделей');
@@ -88,61 +94,25 @@ const AddCarInfo: React.FC = () => {
         }
     };
 
-    const handleModelChange = async (modelId: string) => {
-        form.setFieldsValue({ generation: undefined });
+    const handleModelChange = async (value: string) => {
+        setSelectedModel(value);
         setGenerations([]);
 
-        const brandId = form.getFieldValue('brand');
-        if (brandId) {
-            try {
-                setLoading(prev => ({ ...prev, generations: true }));
-                const generationsData = await carApi.fetchGenerations(brandId, modelId);
-                setGenerations(generationsData);
-            } catch (error) {
-                handleApiError(error, 'Ошибка при загрузке поколений');
-            } finally {
-                setLoading(prev => ({ ...prev, generations: false }));
-            }
+        try {
+            setLoading(prev => ({ ...prev, generations: true }));
+            const generationsData = await carApi.fetchGenerations(selectedBrand, value);
+            setGenerations(generationsData);
+        } catch (error) {
+            handleApiError(error, 'Ошибка при загрузке поколений');
+        } finally {
+            setLoading(prev => ({ ...prev, generations: false }));
         }
     };
 
     const onFinish = async (values: CarFormData) => {
         try {
             setLoading(prev => ({ ...prev, submit: true }));
-            const carData = {
-                basicInfo: {
-                    brand: values.brand,
-                    model: values.model,
-                    generation: values.generation
-                },
-                headlights: {
-                    types: values.headlight_types || [],
-                    description: values.headlights_description
-                },
-                frames: {
-                    specifications: values.frames_specs,
-                    commonIssues: values.frames_issues
-                },
-                emulators: {
-                    specifications: values.emulators_specs,
-                    commonIssues: values.emulators_issues
-                },
-                mounts: {
-                    specifications: values.mounts_specs,
-                    commonIssues: values.mounts_issues
-                },
-                glass: {
-                    specifications: values.glass_specs,
-                    commonIssues: values.glass_issues
-                },
-                additionalInfo: {
-                    info: values.additional_info,
-                    commonIssues: values.additional_issues
-                }
-            };
-
-            console.log('Отправка данных на сервер:', carData);
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await carApi.addCarInfo(values);
             message.success('Информация успешно сохранена');
             form.resetFields();
         } catch (error) {

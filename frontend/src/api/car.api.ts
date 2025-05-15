@@ -1,5 +1,5 @@
 import { API_CONFIG } from '../config/api.config';
-import { Brand, Model, Generation, CarInfo } from '../types/car.types';
+import { Brand, Model, Generation, CarInfo, CarFormData } from '../types/car.types';
 
 const headers = {
     'api-token': API_CONFIG.TOKEN
@@ -50,5 +50,19 @@ export const carApi = {
             throw new Error('Failed to fetch car info');
         }
         return response.json();
+    },
+
+    async addCarInfo(data: CarFormData): Promise<void> {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/car-info`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_CONFIG.TOKEN}`
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            throw new Error('Failed to add car info');
+        }
     }
 }; 
