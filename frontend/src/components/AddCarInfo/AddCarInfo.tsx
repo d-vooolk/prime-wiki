@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {Form, Input, Button, Card, Row, Col, Select, Tabs, message} from 'antd';
+import {Form, Input, Button, Card, Row, Col, Select, Tabs, Modal, Typography} from 'antd';
 import {
     BranchesOutlined,
     RadiusSettingOutlined,
     InfoCircleOutlined
 } from "@ant-design/icons";
-import { Brand, Model, Generation, CarFormData } from '../../types/car.types';
+import {Brand, Model, Generation, CarInfo} from '../../types/car.types';
 import { carApi } from '../../api/car.api';
 import { handleApiError } from '../../utils/error.utils';
 
@@ -15,6 +15,25 @@ const { TabPane } = Tabs;
 interface AddCarInfoProps {
     activeKey?: string;
 }
+
+const modalSuccessConfig = {
+    title: 'Успешно',
+    content: (
+        <>
+            <Typography>Данные отправлены на сервер и сохранены</Typography>
+        </>
+    ),
+};
+
+const modalErrorConfig = (error: any) => ({
+    title: 'Ошибка',
+    content: (
+        <>
+            <Typography>При сохранении произошла ошибка</Typography>
+            <Typography>{ error }</Typography>
+        </>
+    ),
+});
 
 const AddCarInfo: React.FC<AddCarInfoProps> = () => {
     const [form] = Form.useForm();
@@ -28,7 +47,11 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
         submit: false
     });
     const [selectedBrand, setSelectedBrand] = React.useState<string>('');
+    const [selectedModel, setSelectedModel] = React.useState<string>('');
+    const [selectedGeneration, setSelectedGeneration] = React.useState<string>('');
+    const [carInfo, setCarInfo] = useState<CarInfo | null>(null);
 
+    const [modal, contextHolder] = Modal.useModal();
     const { TextArea } = Input;
 
     useEffect(() => {
@@ -49,8 +72,11 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
 
     const handleBrandChange = async (value: string) => {
         setSelectedBrand(value);
+        setSelectedModel('');
+        setSelectedGeneration('');
         setModels([]);
         setGenerations([]);
+        form.resetFields(['model', 'generation']);
 
         try {
             setLoading(prev => ({ ...prev, models: true }));
@@ -64,6 +90,9 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
     };
 
     const handleModelChange = async (value: string) => {
+        setSelectedModel(value);
+        setSelectedGeneration('');
+        form.resetFields(['generation']);
         setGenerations([]);
 
         try {
@@ -77,33 +106,58 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
         }
     };
 
-    const onFinish = async (values: CarFormData) => {
-        try {
-            setLoading(prev => ({ ...prev, submit: true }));
-            await carApi.addCarInfo(values);
-            message.success('Информация успешно сохранена');
-            form.resetFields();
-        } catch (error) {
-            handleApiError(error, 'Произошла ошибка при сохранении данных');
-        } finally {
-            setLoading(prev => ({ ...prev, submit: false }));
-        }
-    };
-
-    const handleSendData = () => {
-        console.log(form.getFieldsValue());
-        fetch('http://localhost:3002/api/cars', {
-            method: 'POST',
+    const handleGenerationChange = (value: string) => {
+        setSelectedGeneration(value);
+        setLoading(prev => ({ ...prev, generations: true }));
+        fetch(`http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${value}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(form.getFieldsValue()),
         })
             .then(res => res.json())
             .then(data => {
                 console.log('Полученные данные:', data);
+                setCarInfo(data);
+                form.setFieldsValue({
+                    description: data?.description,
+                    frames_specs: data?.frames_specs,
+                    frames_issues: data?.frames_issues,
+                    emulators_specs: data?.emulators_specs,
+                    emulators_issues: data?.emulators_issues,
+                });
+            })
+            .catch(error => {
+                console.error(error);
             });
     }
+
+    const onFinish = () => {
+            setLoading(prev => ({ ...prev, submit: true }));
+            fetch(carInfo
+                    ? `http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}`
+                    : 'http://localhost:3002/api/cars', {
+                method: carInfo
+                        ? 'PUT'
+                        : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form.getFieldsValue()),
+            })
+                .then(res => res.json())
+                .then(() => {
+                    modal.info(modalSuccessConfig);
+                })
+                .catch((error) => {
+                    modal.error(modalErrorConfig(error.message))
+                })
+                .finally(() => {
+                    setLoading(prev => ({ ...prev, submit: false }));
+                });
+            form.resetFields();
+            setSelectedGeneration('');
+    };
 
     return (
         <Card title="Внести информацию об автомобиле">
@@ -118,13 +172,13 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                 }}
             >
                 <Tabs defaultActiveKey="1">
-                    <TabPane tab={<span><InfoCircleOutlined /> Основная информация</span>} key="1">
+                    <TabPane tab={<span><InfoCircleOutlined/> Основная информация</span>} key="1">
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item
                                     name="brand"
                                     label="Марка"
-                                    rules={[{ required: true, message: 'Пожалуйста, выберите марку' }]}
+                                    rules={[{required: true, message: 'Пожалуйста, выберите марку'}]}
                                 >
                                     <Select
                                         showSearch
@@ -139,12 +193,16 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                                     >
                                         {brands.map(brand => (
                                             <Option key={brand.id} value={brand.id} label={brand.name}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                                     {brand.logo ? (
-                                                        <img 
-                                                            src={brand.logo} 
-                                                            alt={brand.name} 
-                                                            style={{ width: '24px', height: '24px', objectFit: 'contain' }} 
+                                                        <img
+                                                            src={brand.logo}
+                                                            alt={brand.name}
+                                                            style={{
+                                                                width: '24px',
+                                                                height: '24px',
+                                                                objectFit: 'contain'
+                                                            }}
                                                             onError={(e) => {
                                                                 const target = e.target as HTMLImageElement;
                                                                 console.log('Image load error for brand:', brand.name, 'URL:', brand.logo);
@@ -153,7 +211,14 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                                                             }}
                                                         />
                                                     ) : (
-                                                        <div style={{ width: '24px', height: '24px', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <div style={{
+                                                            width: '24px',
+                                                            height: '24px',
+                                                            background: '#f0f0f0',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center'
+                                                        }}>
                                                             {brand.name.charAt(0)}
                                                         </div>
                                                     )}
@@ -168,9 +233,9 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                                 <Form.Item
                                     name="model"
                                     label="Модель"
-                                    rules={[{ required: true, message: 'Пожалуйста, выберите модель' }]}
+                                    rules={[{required: true, message: 'Пожалуйста, выберите модель'}]}
                                 >
-                                    <Select 
+                                    <Select
                                         placeholder="Выберите модель"
                                         disabled={!form.getFieldValue('brand')}
                                         onChange={handleModelChange}
@@ -189,12 +254,13 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                                 <Form.Item
                                     name="generation"
                                     label="Поколение"
-                                    rules={[{ required: true, message: 'Пожалуйста, выберите поколение' }]}
+                                    rules={[{required: true, message: 'Пожалуйста, выберите поколение'}]}
                                 >
-                                    <Select 
+                                    <Select
                                         placeholder="Выберите поколение"
                                         disabled={!form.getFieldValue('model')}
                                         loading={loading.generations}
+                                        onChange={handleGenerationChange}
                                     >
                                         {generations.map(generation => (
                                             <Option key={generation.id} value={generation.id}>
@@ -206,61 +272,67 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                             </Col>
                         </Row>
 
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="description"
-                                    label="Дополнительная информация"
-                                    rules={[{ required: false }]}
-                                >
-                                    <TextArea
-                                        rows={4}
-                                        placeholder="Дополнительное описание"
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                        {
+                            selectedGeneration && (
+                                <Row gutter={16}>
+                                    <Col span={24}>
+                                        <Form.Item
+                                            name="description"
+                                            label="Дополнительная информация"
+                                            rules={[{required: false}]}
+                                        >
+                                            <TextArea
+                                                rows={4}
+                                                placeholder="Дополнительное описание"
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            )
+                        }
                     </TabPane>
 
-                    <TabPane tab={<span><RadiusSettingOutlined /> Рамки</span>} key="3">
+                    <TabPane disabled={!selectedGeneration} tab={<span><RadiusSettingOutlined/> Рамки</span>} key="3">
                         <Form.Item
                             name="frames_specs"
                             label="Характеристики рамок"
                         >
-                            <TextArea rows={4} placeholder="Введите характеристики рамок" />
+                            <TextArea rows={4} placeholder="Введите характеристики рамок"/>
                         </Form.Item>
 
                         <Form.Item
                             name="frames_issues"
                             label="Распространенные проблемы"
                         >
-                            <TextArea rows={4} placeholder="Введите распространенные проблемы" />
+                            <TextArea rows={4} placeholder="Введите распространенные проблемы"/>
                         </Form.Item>
                     </TabPane>
 
-                    <TabPane tab={<span><BranchesOutlined /> Обманки</span>} key="4">
+                    <TabPane disabled={!selectedGeneration} tab={<span><BranchesOutlined/> Обманки</span>} key="4">
                         <Form.Item
                             name="emulators_specs"
                             label="Характеристики обманок"
                         >
-                            <TextArea rows={4} placeholder="Введите характеристики обманок" />
+                            <TextArea rows={4} placeholder="Введите характеристики обманок"/>
                         </Form.Item>
 
                         <Form.Item
                             name="emulators_issues"
                             label="Распространенные проблемы"
                         >
-                            <TextArea rows={4} placeholder="Введите распространенные проблемы" />
+                            <TextArea rows={4} placeholder="Введите распространенные проблемы"/>
                         </Form.Item>
                     </TabPane>
                 </Tabs>
 
-                <Form.Item style={{ marginTop: 24 }}>
-                    <Button type="primary" loading={loading.submit} onClick={() => handleSendData()}>
+                <Form.Item style={{marginTop: 24}}>
+                    <Button type="primary" loading={loading.submit} htmlType="submit">
                         Сохранить
                     </Button>
                 </Form.Item>
             </Form>
+
+            {contextHolder}
         </Card>
     );
 };
