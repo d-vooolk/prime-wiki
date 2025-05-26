@@ -13,7 +13,7 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 
 interface AddCarInfoProps {
-    activeKey: string;
+    activeKey?: string;
 }
 
 const AddCarInfo: React.FC<AddCarInfoProps> = () => {
