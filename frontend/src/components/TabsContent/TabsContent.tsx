@@ -1,64 +1,36 @@
 import React from 'react';
-import { Card, Tabs, List } from 'antd';
-import { CarInfo } from '../../types/car.types';
+import {Card, Image, Tabs, Typography} from 'antd';
+import {CarInfo, Generation} from '../../types/car.types';
 
 const { TabPane } = Tabs;
 
 interface TabsContentProps {
-    carInfo: CarInfo;
+    carInfo?: CarInfo | null;
+    generations: Generation[];
+    selectedGeneration: string | null;
 }
 
-const TabsContent: React.FC<TabsContentProps> = ({ carInfo }) => {
+const TabsContent: React.FC<TabsContentProps> = ({ carInfo, generations, selectedGeneration }) => {
+    const generationObj = generations.filter(generation => generation.id === selectedGeneration)[0];
+    const { name, year_from, year_to } = generationObj;
+    console.log('generationObj', generationObj)
     return (
         <Card style={{ marginTop: 16 }}>
             <Tabs defaultActiveKey="1">
-                <TabPane tab="Фары" key="1">
-                    <List
-                        dataSource={carInfo.headlights}
-                        renderItem={(item, index) => (
-                            <List.Item key={index}>{item}</List.Item>
-                        )}
-                    />
+                <TabPane tab="Данные" key="1">
+                    <Image src={`http://${generationObj?.photo}`} style={{ maxWidth: "300px" }} />
+                    <Typography>Марка: { carInfo?.brand }</Typography>
+                    <Typography>Модель: { carInfo?.model }</Typography>
+                    <Typography>Поколение: { name } ({year_from}-{year_to}</Typography>
+                    <Typography>Информация: { carInfo?.description }</Typography>
                 </TabPane>
                 <TabPane tab="Рамки" key="2">
-                    <List
-                        dataSource={carInfo.frames}
-                        renderItem={(item, index) => (
-                            <List.Item key={index}>{item}</List.Item>
-                        )}
-                    />
+                    <Typography>Типы рамок: { carInfo?.frames_specs }</Typography>
+                    <Typography>Особенности рамок: { carInfo?.frames_issues }</Typography>
                 </TabPane>
-                <TabPane tab="Эмуляторы" key="3">
-                    <List
-                        dataSource={carInfo.emulators}
-                        renderItem={(item, index) => (
-                            <List.Item key={index}>{item}</List.Item>
-                        )}
-                    />
-                </TabPane>
-                <TabPane tab="Крепления" key="4">
-                    <List
-                        dataSource={carInfo.mounts}
-                        renderItem={(item, index) => (
-                            <List.Item key={index}>{item}</List.Item>
-                        )}
-                    />
-                </TabPane>
-                <TabPane tab="Стёкла" key="5">
-                    <List
-                        dataSource={carInfo.glass}
-                        renderItem={(item, index) => (
-                            <List.Item key={index}>{item}</List.Item>
-                        )}
-                    />
-                </TabPane>
-                <TabPane tab="Дополнительная информация" key="6">
-                    <List
-                        dataSource={carInfo.additionalInfo}
-                        renderItem={(item, index) => (
-                            <List.Item key={index}>{item}</List.Item>
-                        )}
-                    />
+                <TabPane tab="Обманки" key="3">
+                    <Typography>Типы обманок: { carInfo?.emulators_specs }</Typography>
+                    <Typography>Особенности обманок: { carInfo?.emulators_issues }</Typography>
                 </TabPane>
             </Tabs>
         </Card>

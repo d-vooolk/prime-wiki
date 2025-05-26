@@ -33,17 +33,14 @@ const CarSelector: React.FC<CarSelectorProps> = ({
     onGenerationChange,
     loading
 }) => {
-    // Обработчик изменения марки
     const handleBrandChange = (value: string) => {
         onBrandChange(value);
     };
 
-    // Обработчик изменения модели
     const handleModelChange = (value: string) => {
         onModelChange(value);
     };
 
-    // Обработчик изменения поколения
     const handleGenerationChange = (value: string) => {
         onGenerationChange(value);
     };
@@ -77,21 +74,23 @@ const CarSelector: React.FC<CarSelectorProps> = ({
                             >
                                 {brands.map(brand => (
                                     <Select.Option key={brand.id} value={brand.id}>
-                                        {brand.logo && (
-                                            <img 
-                                                src={brand.logo} 
-                                                alt={brand.name} 
-                                                style={{ 
-                                                    width: '24px', 
-                                                    height: '24px', 
-                                                    marginRight: '8px',
-                                                    objectFit: 'contain'
-                                                }} 
-                                            />
-                                        )}
-                                        {brand.name}
+                                        <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                            {brand.logo && (
+                                                <img
+                                                    src={brand.logo}
+                                                    alt={brand.name}
+                                                    style={{
+                                                        width: '24px',
+                                                        height: '24px',
+                                                        marginRight: '8px',
+                                                        objectFit: 'contain',
+                                                    }}
+                                                />
+                                            )}
+                                            <span>{brand.name}</span>
+                                        </div>
                                     </Select.Option>
-                                ))}
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

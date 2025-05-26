@@ -42,6 +42,8 @@ const MainContent: React.FC<MainContentProps> = ({
     onGenerationChange,
     loading
 }) => {
+    console.log('carInfo', carInfo)
+    console.log('generations', generations)
     return (
         <Layout>
             <Content style={{ margin: '0 16px' }}>
@@ -69,9 +71,12 @@ const MainContent: React.FC<MainContentProps> = ({
                                 loading={loading}
                             />
 
-                            {selectedGeneration && carInfo && (
-                                <TabsContent carInfo={carInfo} />
-                            )}
+
+                            <TabsContent
+                                carInfo={carInfo}
+                                generations={generations}
+                                selectedGeneration={selectedGeneration}
+                            />
                         </div>
                     </>
                 ) : (

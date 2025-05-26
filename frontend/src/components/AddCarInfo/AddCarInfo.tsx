@@ -91,8 +91,18 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
     };
 
     const handleSendData = () => {
-        console.log(form.getFieldsValue())
-        // form.getFieldsValue() готовый объект к отправке
+        console.log(form.getFieldsValue());
+        fetch('http://localhost:3002/api/cars', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form.getFieldsValue()),
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Полученные данные:', data);
+            });
     }
 
     return (

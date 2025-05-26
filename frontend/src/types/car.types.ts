@@ -51,12 +51,15 @@ export interface CarFormData {
 }
 
 export interface CarInfo {
-    id: string;
-    generationId: string;
-    headlights: string[];
-    frames: string[];
-    emulators: string[];
-    mounts: string[];
-    glass: string[];
-    additionalInfo: string[];
+    id: string,
+    brand: string,
+    model: string,
+    generation: number | string,
+    description?: string,
+    frames_specs?: string,
+    frames_issues?: string,
+    emulators_specs?: string,
+    emulators_issues?: string,
+    createdAt?: string,
+    updatedAt?: string
 } 

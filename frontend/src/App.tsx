@@ -42,7 +42,6 @@ const App: React.FC = () => {
         setSelectedBrand(brandId);
         setSelectedModel(null);
         setSelectedGeneration(null);
-        setCarInfo(null);
         setModels([]);
         setGenerations([]);
 
@@ -60,7 +59,6 @@ const App: React.FC = () => {
     const handleModelChange = async (modelId: string) => {
         setSelectedModel(modelId);
         setSelectedGeneration(null);
-        setCarInfo(null);
         setGenerations([]);
 
         if (selectedBrand) {
@@ -78,7 +76,17 @@ const App: React.FC = () => {
 
     const handleGenerationChange = async (generationId: string) => {
         setSelectedGeneration(generationId);
-        setCarInfo(null);
+        fetch(`http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${generationId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Полученные данные:', data);
+                setCarInfo(data);
+            });
     };
 
     const handleMenuClick = (key: string) => {
