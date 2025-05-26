@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f261165-36e2-4e9f-a40a-416b73ac0355" name="Changes" comment="edit form">
-      <change afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/config/database.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/controllers/carInfoController.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/entities/CarInfo.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/routes/carInfoRoutes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/tsconfig.json" afterDir="false" />
+    <list default="true" id="9f261165-36e2-4e9f-a40a-416b73ac0355" name="Changes" comment="add backend env">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,7 +102,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747340516184</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add backend">
+      <option name="closed" value="true" />
+      <created>1747346249665</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747346249665</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add backend env">
+      <option name="closed" value="true" />
+      <created>1748286399548</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1748286399548</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +140,8 @@
     <MESSAGE value="add worked project" />
     <MESSAGE value="move all files into frontend directory" />
     <MESSAGE value="edit form" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit form" />
+    <MESSAGE value="add backend" />
+    <MESSAGE value="add backend env" />
+    <option name="LAST_COMMIT_MESSAGE" value="add backend env" />
   </component>
 </project>

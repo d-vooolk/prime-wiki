@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Card, Row, Col, Select, Tabs, message, Checkbox } from 'antd';
+import {Form, Input, Button, Card, Row, Col, Select, Tabs, message} from 'antd';
 import {
-    ApiOutlined,
     BranchesOutlined,
-    CarOutlined,
     RadiusSettingOutlined,
-    SoundOutlined,
-    StarOutlined,
     InfoCircleOutlined
 } from "@ant-design/icons";
 import { Brand, Model, Generation, CarFormData } from '../../types/car.types';
@@ -14,17 +10,14 @@ import { carApi } from '../../api/car.api';
 import { handleApiError } from '../../utils/error.utils';
 
 const { Option } = Select;
-const { TextArea } = Input;
 const { TabPane } = Tabs;
 
 interface AddCarInfoProps {
     activeKey: string;
 }
 
-const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
+const AddCarInfo: React.FC<AddCarInfoProps> = () => {
     const [form] = Form.useForm();
-    const [activeTab, setActiveTab] = React.useState('1');
-    
     const [brands, setBrands] = useState<Brand[]>([]);
     const [models, setModels] = useState<Model[]>([]);
     const [generations, setGenerations] = useState<Generation[]>([]);
@@ -35,7 +28,8 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
         submit: false
     });
     const [selectedBrand, setSelectedBrand] = React.useState<string>('');
-    const [selectedModel, setSelectedModel] = React.useState<string>('');
+
+    const { TextArea } = Input;
 
     useEffect(() => {
         fetchBrands();
@@ -53,33 +47,8 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
         }
     };
 
-    const fetchModels = async (markId: string) => {
-        try {
-            setLoading(prev => ({ ...prev, models: true }));
-            const modelsData = await carApi.fetchModels(markId);
-            setModels(modelsData);
-        } catch (error) {
-            handleApiError(error, 'Ошибка при загрузке моделей');
-        } finally {
-            setLoading(prev => ({ ...prev, models: false }));
-        }
-    };
-
-    const fetchGenerations = async (markId: string, modelId: string) => {
-        try {
-            setLoading(prev => ({ ...prev, generations: true }));
-            const generationsData = await carApi.fetchGenerations(markId, modelId);
-            setGenerations(generationsData);
-        } catch (error) {
-            handleApiError(error, 'Ошибка при загрузке поколений');
-        } finally {
-            setLoading(prev => ({ ...prev, generations: false }));
-        }
-    };
-
     const handleBrandChange = async (value: string) => {
         setSelectedBrand(value);
-        setSelectedModel('');
         setModels([]);
         setGenerations([]);
 
@@ -95,7 +64,6 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
     };
 
     const handleModelChange = async (value: string) => {
-        setSelectedModel(value);
         setGenerations([]);
 
         try {
@@ -122,12 +90,8 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
         }
     };
 
-    const handleTabChange = (key: string) => {
-        setActiveTab(key);
-    };
-
     return (
-        <Card title="Внести информацию об автомобиле" bordered={false}>
+        <Card title="Внести информацию об автомобиле">
             <Form
                 form={form}
                 layout="vertical"
@@ -138,7 +102,7 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
                     generation: undefined
                 }}
             >
-                <Tabs defaultActiveKey="1" onChange={handleTabChange}>
+                <Tabs defaultActiveKey="1">
                     <TabPane tab={<span><InfoCircleOutlined /> Основная информация</span>} key="1">
                         <Row gutter={16}>
                             <Col span={12}>
@@ -226,37 +190,21 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                    </TabPane>
 
-                    <TabPane tab={<span><SoundOutlined /> Фары</span>} key="2">
-                        <Form.Item
-                            name="headlight_types"
-                            label="Тип фар"
-                        >
-                            <Checkbox.Group>
-                                <Row>
-                                    <Col span={24}>
-                                        <Checkbox value="halogen">Галоген</Checkbox>
-                                    </Col>
-                                    <Col span={24}>
-                                        <Checkbox value="xenon">Ксенон</Checkbox>
-                                    </Col>
-                                    <Col span={24}>
-                                        <Checkbox value="led">LED</Checkbox>
-                                    </Col>
-                                    <Col span={24}>
-                                        <Checkbox value="adaptive">Adaptive</Checkbox>
-                                    </Col>
-                                </Row>
-                            </Checkbox.Group>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="headlights_description"
-                            label="Описание фар"
-                        >
-                            <TextArea rows={4} placeholder="Введите описание фар" />
-                        </Form.Item>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="description"
+                                    label="Дополнительная информация"
+                                    rules={[{ required: false }]}
+                                >
+                                    <TextArea
+                                        rows={4}
+                                        placeholder="Дополнительное описание"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </TabPane>
 
                     <TabPane tab={<span><RadiusSettingOutlined /> Рамки</span>} key="3">
@@ -285,54 +233,6 @@ const AddCarInfo: React.FC<AddCarInfoProps> = ({ activeKey }) => {
 
                         <Form.Item
                             name="emulators_issues"
-                            label="Распространенные проблемы"
-                        >
-                            <TextArea rows={4} placeholder="Введите распространенные проблемы" />
-                        </Form.Item>
-                    </TabPane>
-
-                    <TabPane tab={<span><ApiOutlined /> Крепления</span>} key="5">
-                        <Form.Item
-                            name="mounts_specs"
-                            label="Характеристики креплений"
-                        >
-                            <TextArea rows={4} placeholder="Введите характеристики креплений" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="mounts_issues"
-                            label="Распространенные проблемы"
-                        >
-                            <TextArea rows={4} placeholder="Введите распространенные проблемы" />
-                        </Form.Item>
-                    </TabPane>
-
-                    <TabPane tab={<span><CarOutlined /> Стёкла</span>} key="6">
-                        <Form.Item
-                            name="glass_specs"
-                            label="Характеристики стёкол"
-                        >
-                            <TextArea rows={4} placeholder="Введите характеристики стёкол" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="glass_issues"
-                            label="Распространенные проблемы"
-                        >
-                            <TextArea rows={4} placeholder="Введите распространенные проблемы" />
-                        </Form.Item>
-                    </TabPane>
-
-                    <TabPane tab={<span><StarOutlined /> Дополнительная информация</span>} key="7">
-                        <Form.Item
-                            name="additional_info"
-                            label="Дополнительная информация"
-                        >
-                            <TextArea rows={4} placeholder="Введите дополнительную информацию" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="additional_issues"
                             label="Распространенные проблемы"
                         >
                             <TextArea rows={4} placeholder="Введите распространенные проблемы" />
