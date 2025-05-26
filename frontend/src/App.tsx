@@ -78,19 +78,7 @@ const App: React.FC = () => {
 
     const handleGenerationChange = async (generationId: string) => {
         setSelectedGeneration(generationId);
-        // TODO: Implement car info fetch from our backend
         setCarInfo(null);
-        /* Temporarily commented out until our backend is ready
-        try {
-            setLoading(prev => ({ ...prev, carInfo: true }));
-            const carInfoData = await carApi.fetchCarInfo(generationId);
-            setCarInfo(carInfoData);
-        } catch (error) {
-            handleApiError(error, 'Ошибка при загрузке информации об автомобиле');
-        } finally {
-            setLoading(prev => ({ ...prev, carInfo: false }));
-        }
-        */
     };
 
     const handleMenuClick = (key: string) => {

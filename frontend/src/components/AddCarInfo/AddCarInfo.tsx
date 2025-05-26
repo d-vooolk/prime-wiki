@@ -90,6 +90,11 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
         }
     };
 
+    const handleSendData = () => {
+        console.log(form.getFieldsValue())
+        // form.getFieldsValue() готовый объект к отправке
+    }
+
     return (
         <Card title="Внести информацию об автомобиле">
             <Form
@@ -241,7 +246,7 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                 </Tabs>
 
                 <Form.Item style={{ marginTop: 24 }}>
-                    <Button type="primary" htmlType="submit" loading={loading.submit}>
+                    <Button type="primary" loading={loading.submit} onClick={() => handleSendData()}>
                         Сохранить
                     </Button>
                 </Form.Item>
