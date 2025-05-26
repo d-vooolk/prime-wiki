@@ -71,12 +71,15 @@ const MainContent: React.FC<MainContentProps> = ({
                                 loading={loading}
                             />
 
-
-                            <TabsContent
-                                carInfo={carInfo}
-                                generations={generations}
-                                selectedGeneration={selectedGeneration}
-                            />
+                            {
+                                carInfo && generations && selectedGeneration && (
+                                    <TabsContent
+                                        carInfo={carInfo}
+                                        generations={generations}
+                                        selectedGeneration={selectedGeneration}
+                                    />
+                                )
+                            }
                         </div>
                     </>
                 ) : (
