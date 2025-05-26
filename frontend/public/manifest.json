@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Prime Wiki",
+  "name": "Prime Wiki - Custom Wiki for Prime Auto retrofit studio",
   "icons": [
     {
       "src": "favicon.svg",
