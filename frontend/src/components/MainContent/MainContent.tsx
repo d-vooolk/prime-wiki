@@ -70,7 +70,7 @@ const MainContent: React.FC<MainContentProps> = ({
                             />
 
                             {
-                                carInfo && generations && selectedGeneration && (
+                                generations && selectedGeneration && (
                                     <TabsContent
                                         carInfo={carInfo}
                                         generations={generations}

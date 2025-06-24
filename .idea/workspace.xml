@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f261165-36e2-4e9f-a40a-416b73ac0355" name="Changes" comment="Ignore uploads folder with media files">
-      <change afterPath="$PROJECT_DIR$/frontend/src/constants/url.ts" afterDir="false" />
+    <list default="true" id="9f261165-36e2-4e9f-a40a-416b73ac0355" name="Changes" comment="change url">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/MainContent/MainContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MainContent/MainContent.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +84,7 @@
       <workItem from="1746652383150" duration="8526000" />
       <workItem from="1748394576526" duration="2000" />
       <workItem from="1749661523083" duration="203000" />
-      <workItem from="1750761181303" duration="17363000" />
+      <workItem from="1750761181303" duration="17997000" />
     </task>
     <task id="LOCAL-00001" summary="add worked project">
       <option name="closed" value="true" />
@@ -175,7 +174,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750782028270</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="change url">
+      <option name="closed" value="true" />
+      <created>1750804523546</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1750804523546</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +212,7 @@
     <MESSAGE value="add autocomplete to brands input" />
     <MESSAGE value="add media files" />
     <MESSAGE value="Ignore uploads folder with media files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ignore uploads folder with media files" />
+    <MESSAGE value="change url" />
+    <option name="LAST_COMMIT_MESSAGE" value="change url" />
   </component>
 </project>
