@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState} from 'react';
 import {Form, Input, Button, Card, Row, Col, Select, Tabs, Modal, Typography} from 'antd';
 import {
     BranchesOutlined,
@@ -6,14 +6,20 @@ import {
     InfoCircleOutlined
 } from "@ant-design/icons";
 import {Brand, Model, Generation, CarInfo} from '../../types/car.types';
-import { carApi } from '../../api/car.api';
-import { handleApiError } from '../../utils/error.utils';
+import {carApi} from '../../api/car.api';
+import {handleApiError} from '../../utils/error.utils';
 
-const { Option } = Select;
-const { TabPane } = Tabs;
+const {Option} = Select;
+const {TabPane} = Tabs;
 
 interface AddCarInfoProps {
-    activeKey?: string;
+    selectedBrand: string | null;
+    selectedModel: string | null;
+    selectedGeneration: string | null;
+    carInfo: CarInfo | null;
+    brands: Brand[];
+    models: Model[];
+    generations: Generation[];
 }
 
 const modalSuccessConfig = {
@@ -30,14 +36,20 @@ const modalErrorConfig = (error: any) => ({
     content: (
         <>
             <Typography>При сохранении произошла ошибка</Typography>
-            <Typography>{ error }</Typography>
+            <Typography>{error}</Typography>
         </>
     ),
 });
 
-const AddCarInfo: React.FC<AddCarInfoProps> = () => {
+const AddCarInfo: React.FC<AddCarInfoProps> = ({
+                                                   selectedBrand: defaultSelectedBrand,
+                                                   selectedModel: defaultSelectedModel,
+                                                   selectedGeneration: defaultSelectedGeneration,
+                                                   carInfo: defaultCarInfo,
+                                                   brands,
+                                               }) => {
+    console.log('carInfo', defaultCarInfo, defaultSelectedBrand, defaultSelectedModel, defaultSelectedGeneration);
     const [form] = Form.useForm();
-    const [brands, setBrands] = useState<Brand[]>([]);
     const [models, setModels] = useState<Model[]>([]);
     const [generations, setGenerations] = useState<Generation[]>([]);
     const [loading, setLoading] = useState({
@@ -46,29 +58,13 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
         generations: false,
         submit: false
     });
-    const [selectedBrand, setSelectedBrand] = React.useState<string>('');
-    const [selectedModel, setSelectedModel] = React.useState<string>('');
-    const [selectedGeneration, setSelectedGeneration] = React.useState<string>('');
-    const [carInfo, setCarInfo] = useState<CarInfo | null>(null);
+    const [selectedBrand, setSelectedBrand] = React.useState<string>(defaultSelectedBrand || '');
+    const [selectedModel, setSelectedModel] = React.useState<string>(defaultSelectedModel || '');
+    const [selectedGeneration, setSelectedGeneration] = React.useState<string>(defaultSelectedGeneration || '');
+    const [carInfo, setCarInfo] = useState<CarInfo | null>(defaultCarInfo || null);
 
     const [modal, contextHolder] = Modal.useModal();
-    const { TextArea } = Input;
-
-    useEffect(() => {
-        fetchBrands();
-    }, []);
-
-    const fetchBrands = async () => {
-        try {
-            setLoading(prev => ({ ...prev, brands: true }));
-            const brandsData = await carApi.fetchBrands();
-            setBrands(brandsData);
-        } catch (error) {
-            handleApiError(error, 'Ошибка при загрузке марок');
-        } finally {
-            setLoading(prev => ({ ...prev, brands: false }));
-        }
-    };
+    const {TextArea} = Input;
 
     const handleBrandChange = async (value: string) => {
         setSelectedBrand(value);
@@ -79,13 +75,13 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
         form.resetFields(['model', 'generation']);
 
         try {
-            setLoading(prev => ({ ...prev, models: true }));
+            setLoading(prev => ({...prev, models: true}));
             const modelsData = await carApi.fetchModels(value);
             setModels(modelsData);
         } catch (error) {
             handleApiError(error, 'Ошибка при загрузке моделей');
         } finally {
-            setLoading(prev => ({ ...prev, models: false }));
+            setLoading(prev => ({...prev, models: false}));
         }
     };
 
@@ -96,19 +92,19 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
         setGenerations([]);
 
         try {
-            setLoading(prev => ({ ...prev, generations: true }));
+            setLoading(prev => ({...prev, generations: true}));
             const generationsData = await carApi.fetchGenerations(selectedBrand, value);
             setGenerations(generationsData);
         } catch (error) {
             handleApiError(error, 'Ошибка при загрузке поколений');
         } finally {
-            setLoading(prev => ({ ...prev, generations: false }));
+            setLoading(prev => ({...prev, generations: false}));
         }
     };
 
     const handleGenerationChange = (value: string) => {
         setSelectedGeneration(value);
-        setLoading(prev => ({ ...prev, generations: true }));
+        setLoading(prev => ({...prev, generations: true}));
         fetch(`http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${value}`, {
             method: 'GET',
             headers: {
@@ -135,30 +131,30 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
     }
 
     const onFinish = () => {
-            setLoading(prev => ({ ...prev, submit: true }));
-            fetch(carInfo
-                    ? `http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}`
-                    : 'http://localhost:3002/api/cars', {
-                method: carInfo
-                        ? 'PUT'
-                        : 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(form.getFieldsValue()),
+        setLoading(prev => ({...prev, submit: true}));
+        fetch(carInfo?.id
+            ? `http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}`
+            : 'http://localhost:3002/api/cars', {
+            method: carInfo?.id
+                ? 'PUT'
+                : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form.getFieldsValue()),
+        })
+            .then(res => res.json())
+            .then(() => {
+                modal.info(modalSuccessConfig);
             })
-                .then(res => res.json())
-                .then(() => {
-                    modal.info(modalSuccessConfig);
-                })
-                .catch((error) => {
-                    modal.error(modalErrorConfig(error.message))
-                })
-                .finally(() => {
-                    setLoading(prev => ({ ...prev, submit: false }));
-                });
-            form.resetFields();
-            setSelectedGeneration('');
+            .catch((error) => {
+                modal.error(modalErrorConfig(error.message))
+            })
+            .finally(() => {
+                setLoading(prev => ({...prev, submit: false}));
+            });
+        form.resetFields();
+        setSelectedGeneration('');
     };
 
     return (
@@ -192,6 +188,7 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
                                             const brand = brands.find(b => b.id === option?.value);
                                             return brand?.name.toLowerCase().includes(input.toLowerCase()) || false;
                                         }}
+                                        // defaultValue={carInfo?.brand?.id}
                                     >
                                         {brands.map(brand => (
                                             <Option key={brand.id} value={brand.id} label={brand.name}>

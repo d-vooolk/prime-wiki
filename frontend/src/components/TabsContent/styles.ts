@@ -59,5 +59,14 @@ export const styles = {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start'
+    },
+    textArea: {
+        width: '50em',
+    },
+    saveButton: {
+        marginTop: '16px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     }
 } as const; 

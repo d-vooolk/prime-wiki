@@ -18,22 +18,14 @@ const Car = sequelize.define('Car', {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  frames_specs: {
+  frames: {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  frames_issues: {
+  emulators: {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  emulators_specs: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  emulators_issues: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  }
 }, {
   indexes: [
     {

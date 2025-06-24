@@ -56,10 +56,8 @@ export interface CarInfo {
     model: string,
     generation: number | string,
     description?: string,
-    frames_specs?: string,
-    frames_issues?: string,
-    emulators_specs?: string,
-    emulators_issues?: string,
+    frames?: string,
+    emulators?: string,
     createdAt?: string,
     updatedAt?: string
 } 

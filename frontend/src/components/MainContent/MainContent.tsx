@@ -85,7 +85,15 @@ const MainContent: React.FC<MainContentProps> = ({
                     </>
                 ) : (
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                        <AddCarInfo activeKey={activeKey} />
+                        <AddCarInfo
+                            selectedBrand={selectedBrand}
+                            selectedModel={selectedModel}
+                            selectedGeneration={selectedGeneration}
+                            carInfo={carInfo}
+                            brands={brands}
+                            models={models}
+                            generations={generations}
+                        />
                     </div>
                 )}
             </Content>
