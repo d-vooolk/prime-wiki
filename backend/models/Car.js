@@ -26,6 +26,16 @@ const Car = sequelize.define('Car', {
     type: DataTypes.TEXT,
     allowNull: true
   },
+  photos: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: []
+  },
+  videos: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: []
+  }
 }, {
   indexes: [
     {

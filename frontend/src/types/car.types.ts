@@ -19,6 +19,13 @@ export interface Generation {
     photo?: string | null;
 }
 
+export interface MediaFile {
+    filename: string;
+    originalname: string;
+    path: string;
+    size: number;
+}
+
 export interface CarFormData {
     // Основная информация
     brand: string;
@@ -58,6 +65,8 @@ export interface CarInfo {
     description?: string,
     frames?: string,
     emulators?: string,
+    photos?: MediaFile[],
+    videos?: MediaFile[],
     createdAt?: string,
     updatedAt?: string
 } 

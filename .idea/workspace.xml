@@ -4,9 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f261165-36e2-4e9f-a40a-416b73ac0355" name="Changes" comment="delete add car info page">
+    <list default="true" id="9f261165-36e2-4e9f-a40a-416b73ac0355" name="Changes" comment="add autocomplete to brands input">
+      <change afterPath="$PROJECT_DIR$/backend/config/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/migrations/20250624151533-add-media-fields-to-cars.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/uploads/photos/photos-1750779947993-374548162.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/uploads/videos/videos-1750780001706-315851921.mov" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/CarSelector/CarSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CarSelector/CarSelector.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/Car.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/Car.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/cars.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/cars.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/TabsContent/TabsContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/TabsContent/TabsContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/TabsContent/interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/TabsContent/interface.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/car.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/car.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +95,7 @@
       <workItem from="1746652383150" duration="8526000" />
       <workItem from="1748394576526" duration="2000" />
       <workItem from="1749661523083" duration="203000" />
-      <workItem from="1750761181303" duration="13349000" />
+      <workItem from="1750761181303" duration="15340000" />
     </task>
     <task id="LOCAL-00001" summary="add worked project">
       <option name="closed" value="true" />
@@ -150,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750777052227</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="add autocomplete to brands input">
+      <option name="closed" value="true" />
+      <created>1750777761294</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1750777761294</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,6 +196,7 @@
     <MESSAGE value="add git ignore to backend, change tabs on main page to list, fix brands and marks display" />
     <MESSAGE value="add save page to same page what display information" />
     <MESSAGE value="delete add car info page" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete add car info page" />
+    <MESSAGE value="add autocomplete to brands input" />
+    <option name="LAST_COMMIT_MESSAGE" value="add autocomplete to brands input" />
   </component>
 </project>

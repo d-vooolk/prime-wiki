@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/cars', carRoutes);
+app.use('/uploads', require('express').static('uploads'));
 
 // Database connection and server start
 async function startServer() {

@@ -15,4 +15,6 @@ export interface SendObjectInterface {
     description?: string;
     frames?: string;
     emulators?: string;
+    photos?: any[];
+    videos?: any[];
 }
