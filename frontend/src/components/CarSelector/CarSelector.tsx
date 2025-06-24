@@ -65,16 +65,24 @@ const CarSelector: React.FC<CarSelectorProps> = ({
                             label="Марка"
                             style={{ marginBottom: 0 }}
                         >
-                            <Select 
-                                onChange={handleBrandChange} 
-                                value={selectedBrand || undefined} 
-                                loading={loading.brands}
+                            <Select
+                                showSearch
                                 placeholder="Выберите марку"
                                 style={{ width: '100%' }}
+                                loading={loading.brands}
+                                value={selectedBrand || undefined}
+                                onChange={handleBrandChange}
+                                filterOption={(input, option) =>
+                                    option?.['data-brand-name']?.toLowerCase().includes(input.toLowerCase())
+                                }
                             >
-                                {brands.map(brand => (
-                                    <Select.Option key={brand.id} value={brand.id}>
-                                        <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                {brands.map((brand) => (
+                                    <Select.Option
+                                        key={brand.id}
+                                        value={brand.id}
+                                        data-brand-name={brand.name}
+                                    >
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                             {brand.logo && (
                                                 <img
                                                     src={brand.logo}
@@ -82,7 +90,6 @@ const CarSelector: React.FC<CarSelectorProps> = ({
                                                     style={{
                                                         width: '24px',
                                                         height: '24px',
-                                                        marginRight: '8px',
                                                         objectFit: 'contain',
                                                     }}
                                                 />
@@ -90,8 +97,9 @@ const CarSelector: React.FC<CarSelectorProps> = ({
                                             <span>{brand.name}</span>
                                         </div>
                                     </Select.Option>
-                                    ))}
+                                ))}
                             </Select>
+
                         </Form.Item>
                     </Col>
 
