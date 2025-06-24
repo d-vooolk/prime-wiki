@@ -76,7 +76,7 @@ const App: React.FC = () => {
 
     const handleGenerationChange = async (generationId: string) => {
         setSelectedGeneration(generationId);
-        fetch(`http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${generationId}`, {
+        fetch(`/api/cars/${selectedBrand}/${selectedModel}/${generationId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

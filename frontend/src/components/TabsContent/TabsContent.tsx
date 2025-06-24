@@ -100,8 +100,8 @@ const TabsContent: React.FC<TabsContentProps> = ({
         try {
             const response = await fetch(
                 carInfo?.id
-                    ? `http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}`
-                    : 'http://localhost:3002/api/cars',
+                    ? `/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}`
+                    : '/api/cars',
                 {
                     method: carInfo?.id ? 'PUT' : 'POST',
                     body: formData,
@@ -136,7 +136,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
     const deleteMedia = async (type: 'photos' | 'videos', filename: string) => {
         try {
             const response = await fetch(
-                `http://localhost:3002/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}/media/${type}/${filename}`,
+                `/api/cars/${selectedBrand}/${selectedModel}/${selectedGeneration}/media/${type}/${filename}`,
                 {
                     method: 'DELETE',
                 }
@@ -198,11 +198,11 @@ const TabsContent: React.FC<TabsContentProps> = ({
                                 hoverable
                                 style={{ position: 'relative', width: 220 }}
                                 bodyStyle={{ padding: 8 }}
-                                onClick={type === 'videos' ? () => setVideoModal({visible: true, src: `http://localhost:3002/uploads/videos/${file.filename}`}) : undefined}
+                                onClick={type === 'videos' ? () => setVideoModal({visible: true, src: `/uploads/videos/${file.filename}`}) : undefined}
                             >
                                 {type === 'photos' ? (
                                     <Image
-                                        src={`http://localhost:3002/uploads/photos/${file.filename}`}
+                                        src={`/uploads/photos/${file.filename}`}
                                         alt={file.originalname}
                                         style={{ width: '200px', height: 150, objectFit: 'cover' }}
                                         preview={true}
@@ -210,10 +210,10 @@ const TabsContent: React.FC<TabsContentProps> = ({
                                 ) : (
                                     <div style={{ position: 'relative', height: 150, width: 200, cursor: 'pointer' }}>
                                         <video
-                                            src={`http://localhost:3002/uploads/videos/${file.filename}`}
+                                            src={`/uploads/videos/${file.filename}`}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             controls
-                                            onClick={e => { e.stopPropagation(); setVideoModal({visible: true, src: `http://localhost:3002/uploads/videos/${file.filename}`}); }}
+                                            onClick={e => { e.stopPropagation(); setVideoModal({visible: true, src: `/uploads/videos/${file.filename}`}); }}
                                         />
                                         <PlayCircleOutlined 
                                             style={{ 
@@ -227,7 +227,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
                                                 pointerEvents: 'auto',
                                                 cursor: 'pointer'
                                             }} 
-                                            onClick={e => { e.stopPropagation(); setVideoModal({visible: true, src: `http://localhost:3002/uploads/videos/${file.filename}`}); }}
+                                            onClick={e => { e.stopPropagation(); setVideoModal({visible: true, src: `/uploads/videos/${file.filename}`}); }}
                                         />
                                     </div>
                                 )}
