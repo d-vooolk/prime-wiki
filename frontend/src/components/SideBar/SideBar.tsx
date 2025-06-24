@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
 import {
     CarOutlined,
-    PlusOutlined,
     MenuFoldOutlined,
-    MenuUnfoldOutlined
+    MenuUnfoldOutlined,
+    ShoppingCartOutlined,
 } from '@ant-design/icons';
 import darkLogo from '../../assets/darkLogo.svg';
 import './SideBar.css';
@@ -47,8 +47,8 @@ const SideBar: React.FC<SideBarProps> = ({ onMenuClick }) => {
                 <Menu.Item key="1" icon={<CarOutlined />}>
                     Выбор автомобиля
                 </Menu.Item>
-                <Menu.Item key="2" icon={<PlusOutlined />}>
-                    Добавить информацию
+                <Menu.Item key="2" icon={<ShoppingCartOutlined />}>
+                    Стёкла фар
                 </Menu.Item>
             </Menu>
             <div 

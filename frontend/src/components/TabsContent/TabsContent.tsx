@@ -1,28 +1,11 @@
 import React, {useState} from 'react';
 import {Card, Image, Typography, Space, Divider, Row, Col, Tag, Button, Input, Modal} from 'antd';
-import {CarInfo, Generation} from '../../types/car.types';
 import {styles} from './styles';
 import {EMPTY_DATA} from "../../constants/empty";
 import {DESCRIPTION_PLACEHOLDER, EMULATORS_PLACEHOLDER, FRAMES_PLACEHOLDER} from "../../constants/placeholders";
+import {SendObjectInterface, TabsContentProps} from "./interface";
 
 const {Title, Text, Paragraph} = Typography;
-
-interface TabsContentProps {
-    carInfo?: CarInfo | null;
-    generations: Generation[];
-    selectedBrand: string | null;
-    selectedModel: string | null;
-    selectedGeneration: string | null;
-}
-
-interface SendObjectInterface {
-    brand: string | null;
-    model: string | null;
-    generation: string | null;
-    description?: string;
-    frames?: string;
-    emulators?: string;
-}
 
 const modalSuccessConfig = {
     title: 'Успешно',
@@ -95,7 +78,12 @@ const TabsContent: React.FC<TabsContentProps> = ({
             body: JSON.stringify(resultObj),
         })
             .then(res => res.json())
-            .then(() => {
+            .then((data) => {
+                setFieldsData({
+                    description: data?.description,
+                    frames: data?.frames,
+                    emulators: data?.emulators,
+                })
                 modal.info(modalSuccessConfig);
             })
             .catch((error) => {
@@ -103,6 +91,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
             })
             .finally(() => {
                 setIsLoading(false);
+                setIsEditMode(false);
             });
     };
 
@@ -169,7 +158,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
                             )
                             : (
                                 <Paragraph style={styles.quote}>
-                                    {carInfo?.description || EMPTY_DATA}
+                                    {fieldsData?.description || EMPTY_DATA}
                                 </Paragraph>
                             )
                     }
@@ -192,7 +181,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
                             )
                             : (
                                 <Paragraph style={styles.quote}>
-                                    {carInfo?.frames || EMPTY_DATA}
+                                    {fieldsData?.frames || EMPTY_DATA}
                                 </Paragraph>
                             )
                     }
@@ -215,7 +204,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
                             )
                             : (
                                 <Paragraph style={styles.quote}>
-                                    {carInfo?.emulators || EMPTY_DATA}
+                                    {fieldsData?.emulators || EMPTY_DATA}
                                 </Paragraph>
                             )
                     }
@@ -225,7 +214,13 @@ const TabsContent: React.FC<TabsContentProps> = ({
             {
                 isEditMode && (
                     <div style={styles.saveButton}>
-                        <Button type='primary' onClick={() => saveHandler()}>Сохранить</Button>
+                        <Button
+                            type='primary'
+                            onClick={() => saveHandler()}
+                            disabled={isLoading}
+                        >
+                            Сохранить
+                        </Button>
                     </div>
                 )
             }

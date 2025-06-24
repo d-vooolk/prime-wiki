@@ -3,7 +3,6 @@ import { Layout } from 'antd';
 import CustomBreadcrumb from '../Breadcrumb/Breadcrumb';
 import CarSelector from '../CarSelector/CarSelector';
 import TabsContent from '../TabsContent/TabsContent';
-import AddCarInfo from '../AddCarInfo/AddCarInfo';
 import { CarInfo, Brand, Model, Generation } from '../../types/car.types';
 
 const { Content } = Layout;
@@ -46,7 +45,7 @@ const MainContent: React.FC<MainContentProps> = ({
     return (
         <Layout>
             <Content style={{ margin: '0 16px' }}>
-                {activeKey === '1' ? (
+                {activeKey === '1' && (
                     <>
                         <CustomBreadcrumb
                             selectedBrand={selectedBrand}
@@ -83,17 +82,10 @@ const MainContent: React.FC<MainContentProps> = ({
                             }
                         </div>
                     </>
-                ) : (
+                )}
+                { activeKey === '2' && (
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                        <AddCarInfo
-                            selectedBrand={selectedBrand}
-                            selectedModel={selectedModel}
-                            selectedGeneration={selectedGeneration}
-                            carInfo={carInfo}
-                            brands={brands}
-                            models={models}
-                            generations={generations}
-                        />
+                       in developing ...
                     </div>
                 )}
             </Content>

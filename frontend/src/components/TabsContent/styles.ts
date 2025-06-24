@@ -52,7 +52,7 @@ export const styles = {
         borderLeft: '4px solid #1890ff',
         margin: 0,
         position: 'relative' as const,
-        fontStyle: 'italic' as const
+        fontStyle: 'italic' as const,
     },
     flexRow: {
         display: 'flex',
