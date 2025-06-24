@@ -1,0 +1,1 @@
+export const EMPTY_DATA :string = "Данных по автомобилю нет";

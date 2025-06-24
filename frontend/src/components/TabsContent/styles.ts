@@ -25,6 +25,7 @@ export const styles = {
         objectFit: 'contain'
     },
     title: {
+        marginTop: 0,
         marginBottom: '16px'
     },
     tagContainer: {
@@ -52,5 +53,11 @@ export const styles = {
         margin: 0,
         position: 'relative' as const,
         fontStyle: 'italic' as const
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
     }
 } as const; 

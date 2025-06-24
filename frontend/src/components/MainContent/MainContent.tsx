@@ -43,7 +43,6 @@ const MainContent: React.FC<MainContentProps> = ({
     loading
 }) => {
     console.log('carInfo', carInfo)
-    console.log('generations', generations)
     return (
         <Layout>
             <Content style={{ margin: '0 16px' }}>
@@ -76,6 +75,8 @@ const MainContent: React.FC<MainContentProps> = ({
                                     <TabsContent
                                         carInfo={carInfo}
                                         generations={generations}
+                                        selectedBrand={selectedBrand}
+                                        selectedModel={selectedModel}
                                         selectedGeneration={selectedGeneration}
                                     />
                                 )

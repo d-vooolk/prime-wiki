@@ -116,16 +116,18 @@ const AddCarInfo: React.FC<AddCarInfoProps> = () => {
             },
         })
             .then(res => res.json())
-            .then(data => {
+            .then((data) => {
                 console.log('Полученные данные:', data);
-                setCarInfo(data);
-                form.setFieldsValue({
-                    description: data?.description,
-                    frames_specs: data?.frames_specs,
-                    frames_issues: data?.frames_issues,
-                    emulators_specs: data?.emulators_specs,
-                    emulators_issues: data?.emulators_issues,
-                });
+                if (data?.message !== "Car not found") {
+                    setCarInfo(data);
+                    form.setFieldsValue({
+                        description: data?.description,
+                        frames_specs: data?.frames_specs,
+                        frames_issues: data?.frames_issues,
+                        emulators_specs: data?.emulators_specs,
+                        emulators_issues: data?.emulators_issues,
+                    });
+                }
             })
             .catch(error => {
                 console.error(error);
